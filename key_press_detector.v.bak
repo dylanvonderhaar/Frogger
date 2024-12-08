@@ -1,0 +1,21 @@
+module key_press_detector(
+    input clk,       // Clock signal
+    input key,       // Current key state (1 if pressed, 0 if released)
+    output reg key_pressed // Output signal that will be high for one clock cycle when the key is pressed
+);
+
+reg key_state;          // Current state of the key (pressed or released)
+reg key_state_prev;     // Previous state of the key
+
+always @(posedge clk) begin
+  key_state_prev <= key_state;  // Store the previous state
+  key_state <= key;             // Update the current state
+
+        // Detect the key press (transition from 0 to 1)
+  if (~key_state_prev && key_state) begin
+     key_pressed <= 1;  // Key has been pressed
+  end else begin
+     key_pressed <= 0;  // Key is not pressed
+  end
+ end
+endmodule
